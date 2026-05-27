@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhlanhlenhle Mlondo | Full Stack Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f0ff',
+                            100: '#e0e0ff',
+                            200: '#c4b5fd',
+                            300: '#a78bfa',
+                            400: '#8b5cf6',
+                            500: '#7c3aed',
+                            600: '#6d28d9',
+                            700: '#5b21b6',
+                            800: '#4c1d95',
+                            900: '#3b0f7a',
+                        },
+                        accent: {
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a2e; }
+        ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6d28d9; }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.6); }
+        }
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: #7c3aed; }
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes morph {
+            0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            50% { border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%; }
+            75% { border-radius: 60% 40% 60% 30% / 60% 40% 30% 70%; }
+        }
+
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+        .animate-fade-in-left { animation: fadeInLeft 0.8s ease-out forwards; }
+        .animate-fade-in-right { animation: fadeInRight 0.8s ease-out forwards; }
+        .animate-scale-in { animation: scaleIn 0.6s ease-out forwards; }
+        .animate-slide-down { animation: slideDown 0.5s ease-out forwards; }
+        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        .animate-gradient { animation: gradient-shift 4s ease infinite; background-size: 200% 200%; }
+        .animate-morph { animation: morph 8s ease-in-out infinite; }
+        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+        .animate-orbit { animation: orbit 10s linear infinite; }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+        .delay-700 { animation-delay: 0.7s; }
+        .delay-800 { animation-delay: 0.8s; }
+
+        /* Reveal on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Glass morphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-light {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #7c3aed, #ec4899, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-text-alt {
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Timeline */
+        .timeline-line {
+            background: linear-gradient(180deg, #7c3aed, #ec4899, #7c3aed);
+        }
+
+        /* Hover effects */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(124, 58, 237, 0.2);
+        }
+
+        .skill-bar {
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Navigation active state */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #7c3aed, #ec4899);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Particle canvas */
+        #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Custom cursor effect area */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.15s ease;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Typing effect */
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.1em;
+            background: #7c3aed;
+            margin-left: 4px;
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        /* Stats counter */
+        .stat-number {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a1a] text-white overflow-x-hidden">
+
+    <!-- Cursor Glow Effect -->
+    <div id="cursor-glow" class="cursor-glow hidden lg:block"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <!-- Logo -->
+                <a href="#hero" class="flex items-center gap-2 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                        NM
+                    </div>
+                    <span class="font-display text-xl font-bold hidden sm:block">
+                        <span class="gradient-text">Nhlanhlenhle</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#about" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">About</a>
+                    <a href="#skills" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Skills</a>
+                    <a href="#experience" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Experience</a>
+                    <a href="#education" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Education</a>
+                    <a href="#certifications" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Certifications</a>
+                    <a href="#contact" class="nav-link text-sm font-medium text-gray-300 hover:text-white transition-colors">Contact</a>
+                   <a href="https://nk-enhle.github.io/" target="_blank" class="px-5 py-2 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:scale-105">
+                        Portfolio ↗
+                    </a> 
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="menu-btn" class="md:hidden p-2 text-gray-300 hover:text-white transition-colors">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed inset-y-0 right-0 w-72 z-50 bg-[#0f0f25]/95 backdrop-blur-xl border-l border-white/10">
+        <div class="p-6">
+            <button id="close-menu" class="ml-auto block mb-8 p-2 text-gray-300 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="flex flex-col gap-6">
+                <a href="#about" class="mobile-link text-lg font-medium text-gray-300 hover:text-white transition-colors">About</a>
+                <a href="#skills" class="mobile-link text-lg font-medium text-gray-300 hover:text-white transition-colors">Skills</a>
+                <a href="#experience" class="mobile-link text-lg font-medium text-gray-300 hover:text-white transition-colors">Experience</a>
+                <a href="#education" class="mobile-link text-lg font-medium text-gray-300 hover:text-white transition-colors">Education</a>
+                <a href="#certifications" class="mobile-link text-lg font-medium text-gray-300 hover:text-white transition-colors">Certifications</a>
+                <a href="#contact" class="mobile-link text-lg font-medium text-gray-300 hover:text-white transition-colors">Contact</a>
+                <a href="https://nk-enhle.github.io/" target="_blank" class="mt-4 px-5 py-3 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full text-sm font-semibold text-center hover:shadow-lg transition-all">
+                    View Portfolio ↗
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Animated background elements -->
+        <div class="absolute inset-0">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-morph"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-500/20 rounded-full blur-3xl animate-morph" style="animation-delay: -4s;"></div>
+            <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-primary-400/10 rounded-full blur-3xl animate-morph" style="animation-delay: -2s;"></div>
+        </div>
+
+        <!-- Grid pattern overlay -->
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+        <!-- Decorative orbiting elements -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px]">
+            <div class="animate-spin-slow w-full h-full relative">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-primary-400 rounded-full pulse-glow"></div>
+                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-accent-400 rounded-full"></div>
+                <div class="absolute top-1/2 left-0 -translate-y-1/2 w-2 h-2 bg-primary-300 rounded-full"></div>
+                <div class="absolute top-1/2 right-0 -translate-y-1/2 w-2 h-2 bg-accent-300 rounded-full"></div>
+            </div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <!-- Status badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-8 animate-fade-in-up" style="animation-delay: 0.2s; opacity: 0;">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-sm text-gray-300">Available for opportunities</span>
+            </div>
+
+            <!-- Greeting -->
+            <p class="text-lg md:text-xl text-gray-400 mb-4 animate-fade-in-up" style="animation-delay: 0.4s; opacity: 0;">Hello, I'm</p>
+
+            <!-- Name -->
+            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 animate-fade-in-up" style="animation-delay: 0.6s; opacity: 0;">
+                <span class="gradient-text">Nhlanhlenhle</span>
+                <br>
+                <span class="text-white">Mlondo</span>
+            </h1>
+
+            <!-- Title with typing effect -->
+            <div class="text-xl md:text-2xl lg:text-3xl font-light text-gray-300 mb-8 animate-fade-in-up" style="animation-delay: 0.8s; opacity: 0;">
+                <span id="typed-text"></span><span class="typing-cursor"></span>
+            </div>
+
+            <!-- Objective summary -->
+            <p class="text-base md:text-lg text-gray-400 max-w-2xl mx-auto mb-10 animate-fade-in-up" style="animation-delay: 1s; opacity: 0;">
+                MCSD C# Full Stack Developer with <span class="text-primary-400 font-semibold">10 years</span> of experience in .NET, MVC, and full-stack web development. Building robust, scalable solutions that drive business growth.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style="animation-delay: 1.2s; opacity: 0;">
+                <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-500 rounded-full font-semibold hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:scale-105 flex items-center gap-2">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    Get In Touch
+                </a>
+                <a href="#experience" class="px-8 py-4 glass-light rounded-full font-semibold hover:bg-white/10 transition-all hover:scale-105 flex items-center gap-2">
+                    <i data-lucide="briefcase" class="w-5 h-5"></i>
+                    View Experience
+                </a>
+                <a href="https://nk-enhle.github.io/" target="_blank" class="px-8 py-4 glass-light rounded-full font-semibold hover:bg-white/10 transition-all hover:scale-105 flex items-center gap-2">
+                    <i data-lucide="external-link" class="w-5 h-5"></i>
+                    Portfolio
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mt-16 animate-fade-in-up" style="animation-delay: 1.4s; opacity: 0;">
+                <div class="glass rounded-2xl p-4 md:p-6 text-center card-hover">
+                    <div class="text-3xl md:text-4xl font-bold gradient-text stat-number" data-target="10">0</div>
+                    <div class="text-sm text-gray-400 mt-1">Years Experience</div>
+                </div>
+                <div class="glass rounded-2xl p-4 md:p-6 text-center card-hover">
+                    <div class="text-3xl md:text-4xl font-bold gradient-text stat-number" data-target="6">0</div>
+                    <div class="text-sm text-gray-400 mt-1">Companies</div>
+                </div>
+                <div class="glass rounded-2xl p-4 md:p-6 text-center card-hover">
+                    <div class="text-3xl md:text-4xl font-bold gradient-text stat-number" data-target="7">0</div>
+                    <div class="text-sm text-gray-400 mt-1">Certifications</div>
+                </div>
+                <div class="glass rounded-2xl p-4 md:p-6 text-center card-hover">
+                    <div class="text-3xl md:text-4xl font-bold gradient-text stat-number" data-target="15">0</div>
+                    <div class="text-sm text-gray-400 mt-1">Projects</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+            <span class="text-xs text-gray-500 uppercase tracking-widest">Scroll</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-primary-400"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 md:py-32 relative">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl -translate-x-1/2"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <!-- Image Side -->
+                <div class="reveal-left relative">
+                    <div class="relative">
+                        <!-- Decorative frame -->
+                        <div class="absolute -inset-4 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-3xl blur-xl"></div>
+                        <div class="relative rounded-2xl overflow-hidden aspect-[3/4] max-w-md mx-auto">
+                            <img src="1000802982.jpg" alt="Nhlanhlenhle Mlondo" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a1a] via-transparent to-transparent"></div>
+                        </div>
+                        <!-- Floating badges -->
+                        <div class="absolute -top-4 -right-2 md:right-4 glass rounded-2xl p-3 animate-float">
+                            <div class="flex items-center gap-2">
+                                <div class="w-10 h-10 rounded-lg bg-primary-500/20 flex items-center justify-center">
+                                    <i data-lucide="code-2" class="w-5 h-5 text-primary-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold">MCSD</div>
+                                    <div class="text-xs text-gray-400">Certified</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-4 -left-2 md:left-4 glass rounded-2xl p-3 animate-float" style="animation-delay: -3s;">
+                            <div class="flex items-center gap-2">
+                                <div class="w-10 h-10 rounded-lg bg-accent-500/20 flex items-center justify-center">
+                                    <i data-lucide="trophy" class="w-5 h-5 text-accent-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold">10+ Years</div>
+                                    <div class="text-xs text-gray-400">Experience</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Side -->
+                <div class="reveal-right">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+                        <i data-lucide="user" class="w-4 h-4 text-primary-400"></i>
+                        <span class="text-sm text-gray-300">About Me</span>
+                    </div>
+
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                        Passionate About <span class="gradient-text">Building</span> Digital Solutions
+                    </h2>
+
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        MCSD C# Full Stack Developer experienced in configuring and maintaining C# purchase data capture systems, MVC and .NET Core. Highly responsible personality, effective team player with a decade of professional experience delivering impactful software solutions.
+                    </p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        From building e-commerce platforms that increased sales to streamlining cloud migrations, I bring technical expertise and strategic thinking to every project. My work spans .NET development, web design, UX/UI, database management, and even ethical hacking.
+                    </p>
+
+                    <!-- Info cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-center gap-3 p-3 rounded-xl glass-light">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-primary-400 flex-shrink-0"></i>
+                            <div>
+                                <div class="text-xs text-gray-500">Location</div>
+                                <div class="text-sm font-medium">Northriding, Johannesburg</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 rounded-xl glass-light">
+                            <i data-lucide="mail" class="w-5 h-5 text-primary-400 flex-shrink-0"></i>
+                            <div>
+                                <div class="text-xs text-gray-500">Email</div>
+                                <div class="text-sm font-medium">Nhlakzcs@gmail.com</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 rounded-xl glass-light">
+                            <i data-lucide="phone" class="w-5 h-5 text-primary-400 flex-shrink-0"></i>
+                            <div>
+                                <div class="text-xs text-gray-500">Phone</div>
+                                <div class="text-sm font-medium">060 823 2380</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 rounded-xl glass-light">
+                            <i data-lucide="briefcase" class="w-5 h-5 text-primary-400 flex-shrink-0"></i>
+                            <div>
+                                <div class="text-xs text-gray-500">Status</div>
+                                <div class="text-sm font-medium text-green-400">Available for Interview</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="NhlanhlenhleMlondoCV.pdf" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full font-semibold hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:scale-105">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        Download CV
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 md:py-32 relative bg-[#0d0d20]">
+        <div class="absolute top-1/2 right-0 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl translate-x-1/2"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+                    <i data-lucide="zap" class="w-4 h-4 text-primary-400"></i>
+                    <span class="text-sm text-gray-300">Skills & Expertise</span>
+                </div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">
+                    Technical <span class="gradient-text">Arsenal</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    A decade of continuous learning and hands-on experience across the full Microsoft stack and beyond.
+                </p>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- C# & .NET -->
+                <div class="reveal glass rounded-2xl p-6 card-hover">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center">
+                            <i data-lucide="code-2" class="w-6 h-6 text-primary-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">C# & .NET</h3>
+                            <p class="text-xs text-gray-400">Core Expertise</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">C# Programming</span>
+                                <span class="text-primary-400">95%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-primary-500 to-primary-400 rounded-full" style="width: 0%" data-width="95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">ASP.NET MVC</span>
+                                <span class="text-primary-400">92%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-primary-500 to-primary-400 rounded-full" style="width: 0%" data-width="92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">.NET Core</span>
+                                <span class="text-primary-400">90%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-primary-500 to-primary-400 rounded-full" style="width: 0%" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">ASP.NET 4.5</span>
+                                <span class="text-primary-400">93%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-primary-500 to-primary-400 rounded-full" style="width: 0%" data-width="93%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Web Development -->
+                <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.1s;">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-accent-500/20 flex items-center justify-center">
+                            <i data-lucide="globe" class="w-6 h-6 text-accent-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">Web Development</h3>
+                            <p class="text-xs text-gray-400">Frontend & Backend</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">HTML5 / CSS3</span>
+                                <span class="text-accent-400">90%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-accent-500 to-accent-400 rounded-full" style="width: 0%" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">JavaScript</span>
+                                <span class="text-accent-400">85%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-accent-500 to-accent-400 rounded-full" style="width: 0%" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">UX/UI Design</span>
+                                <span class="text-accent-400">82%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-accent-500 to-accent-400 rounded-full" style="width: 0%" data-width="82%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">SEO & Digital Marketing</span>
+                                <span class="text-accent-400">78%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-accent-500 to-accent-400 rounded-full" style="width: 0%" data-width="78%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database & Cloud -->
+                <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.2s;">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                            <i data-lucide="database" class="w-6 h-6 text-blue-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">Database & Cloud</h3>
+                            <p class="text-xs text-gray-400">SQL & Azure</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">T-SQL / SQL Server</span>
+                                <span class="text-blue-400">90%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full" style="width: 0%" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">Windows Azure</span>
+                                <span class="text-blue-400">85%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full" style="width: 0%" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">Database Management</span>
+                                <span class="text-blue-400">88%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full" style="width: 0%" data-width="88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-300">Cloud Migration</span>
+                                <span class="text-blue-400">82%</span>
+                            </div>
+                            <div class="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="skill-bar h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full" style="width: 0%" data-width="82%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cybersecurity -->
+                <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.3s;">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
+                            <i data-lucide="shield" class="w-6 h-6 text-red-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">Cybersecurity</h3>
+                            <p class="text-xs text-gray-400">Ethical Hacking & OSINT</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 text-xs font-medium bg-red-500/10 text-red-300 rounded-full border border-red-500/20">Penetration Testing</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-red-500/10 text-red-300 rounded-full border border-red-500/20">Windows Privilege Escalation</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-red-500/10 text-red-300 rounded-full border border-red-500/20">Linux Privilege Escalation</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-red-500/10 text-red-300 rounded-full border border-red-500/20">OSINT</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-red-500/10 text-red-300 rounded-full border border-red-500/20">External Pen Testing</span>
+                    </div>
+                </div>
+
+                <!-- System Administration -->
+                <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.4s;">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+                            <i data-lucide="server" class="w-6 h-6 text-green-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg"> Systems & Admin</h3>
+                            <p class="text-xs text-gray-400">Infrastructure & Support</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 text-xs font-medium bg-green-500/10 text-green-300 rounded-full border border-green-500/20">POS Systems</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-green-500/10 text-green-300 rounded-full border border-green-500/20">Tier 2/3 Support</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-green-500/10 text-green-300 rounded-full border border-green-500/20">Remote Support</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-green-500/10 text-green-300 rounded-full border border-green-500/20">Troubleshooting</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-green-500/10 text-green-300 rounded-full border border-green-500/20">MSSQL</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-green-500/10 text-green-300 rounded-full border border-green-500/20">IT Infrastructure</span>
+                    </div>
+                </div>
+
+                <!-- Additional Skills -->
+                <div class="reveal glass rounded-2xl p-6 card-hover" style="transition-delay: 0.5s;">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-6 h-6 text-yellow-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">More Skills</h3>
+                            <p class="text-xs text-gray-400">Cross-disciplinary</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 text-xs font-medium bg-yellow-500/10 text-yellow-300 rounded-full border border-yellow-500/20">MVC Frameworks</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-yellow-500/10 text-yellow-300 rounded-full border border-yellow-500/20">E-Commerce</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-yellow-500/10 text-yellow-300 rounded-full border border-yellow-500/20">Gaming Development</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-yellow-500/10 text-yellow-300 rounded-full border border-yellow-500/20">Blend 2012</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-yellow-500/10 text-yellow-300 rounded-full border border-yellow-500/20">Visual Studio</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-yellow-500/10 text-yellow-300 rounded-full border border-yellow-500/20">Digital Marketing</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-yellow-500/10 text-yellow-300 rounded-full border border-yellow-500/20">Web Notifications</span>
+                        <span class="px-3 py-1.5 text-xs font-medium bg-yellow-500/10 text-yellow-300 rounded-full border border-yellow-500/20">GDN Ads</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 md:py-32 relative">
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl -translate-x-1/2"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+                    <i data-lucide="briefcase" class="w-4 h-4 text-primary-400"></i>
+                    <span class="text-sm text-gray-300">Work Experience</span>
+                </div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">
+                    Professional <span class="gradient-text">Journey</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    A decade of progressive growth, from internships to leading complex development projects across multiple industries.
+                </p>
+            </div>
+
+            <!-- Timeline -->
+            <div class="relative">
+                <!-- Timeline line -->
+                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 via-accent-500 to-primary-500"></div>
+
+                <!-- Experience 1: Equalizer Group -->
+                <div class="relative mb-12 md:mb-16 reveal">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="md:w-1/2 md:text-right md:pr-12">
+                            <div class="glass rounded-2xl p-6 md:p-8 card-hover inline-block w-full">
+                                <div class="flex items-center gap-2 mb-3 md:justify-end">
+                                    <span class="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-primary-600 to-accent-500 rounded-full">Current</span>
+                                    <span class="text-sm text-gray-400">Sep 2024 – Present</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-1">.NET Developer, Web Design & IS Analyst</h3>
+                                <p class="text-primary-400 font-medium mb-2">Equalizer Group</p>
+                                <p class="text-sm text-gray-500 mb-4">Line Manager: Karabo Moshoeshoe</p>
+                                <ul class="text-sm text-gray-400 space-y-2 md:text-right">
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Analyzing and improving IT infrastructure efficiency and effectiveness</span>
+                                    </li>
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Managing SQL database hosted on Azure Account</span>
+                                    </li>
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Developing ASPX Dashboard and Data collection websites</span>
+                                    </li>
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-accent-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Conducting External Penetration Testing</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Center dot -->
+                        <div class="hidden md:flex absolute left-1/2 top-8 -translate-x-1/2 w-5 h-5 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full border-4 border-[#0a0a1a] z-10 animate-pulse-glow"></div>
+                        <div class="md:w-1/2"></div>
+                    </div>
+                </div>
+
+                <!-- Experience 2: Junior System Admin -->
+                <div class="relative mb-12 md:mb-16 reveal">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="md:w-1/2"></div>
+                        <!-- Center dot -->
+                        <div class="hidden md:flex absolute left-1/2 top-8 -translate-x-1/2 w-5 h-5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full border-4 border-[#0a0a1a] z-10"></div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <div class="glass rounded-2xl p-6 md:p-8 card-hover">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-sm text-gray-400">Aug 2023 – Aug 2024</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-1">Junior System Administrator</h3>
+                                <ul class="text-sm text-gray-400 space-y-2 mt-4">
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>1-2 years experience with Point of Sale (POS) systems</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>MSSQL database management and SQL tools expertise</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Tier 2/3 customer support in IT environment</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Remote support and troubleshooting</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience 3: Massbuild (Anthony) -->
+                <div class="relative mb-12 md:mb-16 reveal">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="md:w-1/2 md:text-right md:pr-12">
+                            <div class="glass rounded-2xl p-6 md:p-8 card-hover inline-block w-full">
+                                <div class="flex items-center gap-2 mb-3 md:justify-end">
+                                    <span class="text-sm text-gray-400">Aug 2019 – Jul 2023</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-1">.NET Developer, Web Design & Digital Marketing</h3>
+                                <p class="text-primary-400 font-medium mb-2">Massbuild Builders (E-Commerce)</p>
+                                <p class="text-sm text-gray-500 mb-4">Line Manager: Anthony Kakembo</p>
+                                <ul class="text-sm text-gray-400 space-y-2 md:text-right">
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Developed MVC based online applications using C# and .NET Core Framework</span>
+                                    </li>
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Implemented SQL for enhanced database management and data retrieval</span>
+                                    </li>
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>UX/UI Design with JavaScript, HTML, CSS</span>
+                                    </li>
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Search refinement, Navigation bar, Extra categories and icons, Web Notifications</span>
+                                    </li>
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-accent-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>SEO expertise, Responsive GDNs, Paid Media & Social Media marketing</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Center dot -->
+                        <div class="hidden md:flex absolute left-1/2 top-8 -translate-x-1/2 w-5 h-5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full border-4 border-[#0a0a1a] z-10"></div>
+                        <div class="md:w-1/2"></div>
+                    </div>
+                </div>
+
+                <!-- Experience 4: Massbuild (Kwezi) -->
+                <div class="relative mb-12 md:mb-16 reveal">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="md:w-1/2"></div>
+                        <!-- Center dot -->
+                        <div class="hidden md:flex absolute left-1/2 top-8 -translate-x-1/2 w-5 h-5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full border-4 border-[#0a0a1a] z-10"></div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <div class="glass rounded-2xl p-6 md:p-8 card-hover">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-sm text-gray-400">Aug 2019 – Aug 2019</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-1">.NET Developer</h3>
+                                <p class="text-primary-400 font-medium mb-2">Massbuild Builders (E-Commerce)</p>
+                                <p class="text-sm text-gray-500 mb-4">Line Manager: Kwezi Ngcukana</p>
+                                <ul class="text-sm text-gray-400 space-y-2">
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Assisted in designing and developing software applications</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Coded a successful demo version generating <strong class="text-accent-400">5% increase in sales</strong></span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Streamlined data storage: <strong class="text-accent-400">10% improvement</strong> in processing speed</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Oversaw flawless migration of key applications to cloud-based platforms</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience 5: Dave Mela -->
+                <div class="relative mb-12 md:mb-16 reveal">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="md:w-1/2 md:text-right md:pr-12">
+                            <div class="glass rounded-2xl p-6 md:p-8 card-hover inline-block w-full">
+                                <div class="flex items-center gap-2 mb-3 md:justify-end">
+                                    <span class="text-sm text-gray-400">Aug 2018 – Jul 2019</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-1">.NET Developer</h3>
+                                <p class="text-primary-400 font-medium mb-2">Dave Mela, N.K</p>
+                                <ul class="text-sm text-gray-400 space-y-2 md:text-right">
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Developed, maintained and upgraded .NET applications</span>
+                                    </li>
+                                    <li class="flex items-start gap-2 md:flex-row-reverse md:text-right">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Updated code resulting in an improved user interface</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Center dot -->
+                        <div class="hidden md:flex absolute left-1/2 top-8 -translate-x-1/2 w-5 h-5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full border-4 border-[#0a0a1a] z-10"></div>
+                        <div class="md:w-1/2"></div>
+                    </div>
+                </div>
+
+                <!-- Experience 6: Blackstar Communication -->
+                <div class="relative mb-12 md:mb-16 reveal">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <div class="md:w-1/2"></div>
+                        <!-- Center dot -->
+                        <div class="hidden md:flex absolute left-1/2 top-8 -translate-x-1/2 w-5 h-5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full border-4 border-[#0a0a1a] z-10"></div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <div class="glass rounded-2xl p-6 md:p-8 card-hover">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="px-3 py-1 text-xs font-semibold bg-primary-500/20 text-primary-300 rounded-full">Internship</span>
+                                    <span class="text-sm text-gray-400">Feb 2017 – Jul 2018</span>
+                                </div>
+                                <h3 class="text-xl font-bold mb-1">Junior C# Developer</h3>
+                                <p class="text-primary-400 font-medium mb-2">Blackstar Communication</p>
+                                <p class="text-sm text-gray-500 mb-4">Project Manager: W. Colin</p>
+                                <ul class="text-sm text-gray-400 space-y-2">
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Edited websites using MVC frameworks</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Created HTML5/CSS web interface designs</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Developed/maintained System Database using SQL</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0"></i>
+                                        <span>Developed ASP.NET 4.5 MVC Web Applications</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-20 md:py-32 relative bg-[#0d0d20]">
+        <div class="absolute top-1/2 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl translate-x-1/2"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+                    <i data-lucide="graduation-cap" class="w-4 h-4 text-primary-400"></i>
+                    <span class="text-sm text-gray-300">Education</span>
+                </div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">
+                    Academic <span class="gradient-text">Foundation</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Matric -->
+                <div class="reveal glass rounded-2xl p-8 card-hover">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-xl bg-primary-500/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="school" class="w-7 h-7 text-primary-400"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-primary-400 mb-1">December 2014</div>
+                            <h3 class="text-xl font-bold">Matric Certificate</h3>
+                            <p class="text-gray-400 font-medium">Hoerskool President</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-gray-500 mb-3">Subjects:</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">English</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Maths</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Afrikaans</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Economics</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Accounting</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Business Economics</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Life Orientation</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Physical Science</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTU Training -->
+                <div class="reveal glass rounded-2xl p-8 card-hover" style="transition-delay: 0.1s;">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-14 h-14 rounded-xl bg-accent-500/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="laptop" class="w-7 h-7 text-accent-400"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-accent-400 mb-1">Feb 2015 – Dec 2015</div>
+                            <h3 class="text-xl font-bold">National Certificate: IT</h3>
+                            <p class="text-gray-400 font-medium">CTU Training Solutions</p>
+                            <p class="text-primary-400 text-sm">MCSD – Software Development</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-gray-500 mb-3">Qualifications & Subjects:</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Business Communication</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Computer Literacy</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">HTML5 & JavaScript</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">CSS3</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">ASP.NET</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">C# Programming</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">T-SQL</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Windows Azure</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Gaming Development</span>
+                            <span class="px-2.5 py-1 text-xs bg-white/5 text-gray-300 rounded-lg">Visual Studio 2013</span>
+                        </div>
+                    </div>
+                    <!-- National Qualification -->
+                    <div class="mt-6 p-4 bg-primary-500/10 rounded-xl border border-primary-500/20">
+                        <p class="text-sm font-semibold text-primary-300 mb-1">National Qualification</p>
+                        <p class="text-xs text-gray-400">I.T Systems Development (SAQA ID 48872, NQF 5, 131 Credits)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="py-20 md:py-32 relative">
+        <div class="absolute top-0 left-1/2 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl -translate-x-1/2"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+                    <i data-lucide="award" class="w-4 h-4 text-primary-400"></i>
+                    <span class="text-sm text-gray-300">Certifications</span>
+                </div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">
+                    Microsoft <span class="gradient-text">Certifications</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Industry-recognized certifications validating expertise across the Microsoft development stack and cybersecurity.
+                </p>
+            </div>
+
+            <!-- Certifications Grid -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- MCSD: Windows Store -->
+                <div class="reveal glass rounded-xl p-5 card-hover group">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i data-lucide="monitor-smartphone" class="w-5 h-5 text-primary-400"></i>
+                    </div>
+                    <h4 class="font-semibold text-sm mb-1">MCSD: Windows Store Apps</h4>
+                    <p class="text-xs text-gray-400">Outcome certification using C#</p>
+                    <div class="mt-2 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary-400"></span>
+                        <span class="text-xs text-primary-400">Microsoft Certified</span>
+                    </div>
+                </div>
+
+                <!-- MCSD: Web Applications -->
+                <div class="reveal glass rounded-xl p-5 card-hover group" style="transition-delay: 0.05s;">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i data-lucide="globe" class="w-5 h-5 text-primary-400"></i>
+                    </div>
+                    <h4 class="font-semibold text-sm mb-1">MCSD: Web Applications</h4>
+                    <p class="text-xs text-gray-400">Full stack web development</p>
+                    <div class="mt-2 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary-400"></span>
+                        <span class="text-xs text-primary-400">Microsoft Certified</span>
+                    </div>
+                </div>
+
+                <!-- 70-480 -->
+                <div class="reveal glass rounded-xl p-5 card-hover group" style="transition-delay: 0.1s;">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-500/20 to-yellow-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i data-lucide="file-code-2" class="w-5 h-5 text-accent-400"></i>
+                    </div>
+                    <h4 class="font-semibold text-sm mb-1">70-480</h4>
+                    <p class="text-xs text-gray-400">Programming in HTML5 with JavaScript & CSS3</p>
+                    <div class="mt-2 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-400"></span>
+                        <span class="text-xs text-accent-400">Exam Certified</span>
+                    </div>
+                </div>
+
+                <!-- 70-483 -->
+                <div class="reveal glass rounded-xl p-5 card-hover group" style="transition-delay: 0.15s;">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/20 to-primary-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i data-lucide="code-2" class="w-5 h-5 text-blue-400"></i>
+                    </div>
+                    <h4 class="font-semibold text-sm mb-1">70-483</h4>
+                    <p class="text-xs text-gray-400">Programming in C#</p>
+                    <div class="mt-2 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                        <span class="text-xs text-blue-400">Exam Certified</span>
+                    </div>
+                </div>
+
+                <!-- 70-484 -->
+                <div class="reveal glass rounded-xl p-5 card-hover group" style="transition-delay: 0.2s;">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500/20 to-primary-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i data-lucide="layout" class="w-5 h-5 text-green-400"></i>
+                    </div>
+                    <h4 class="font-semibold text-sm mb-1">70-484</h4>
+                    <p class="text-xs text-gray-400">Essentials of Developing Windows Metro Style Apps</p>
+                    <div class="mt-2 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                        <span class="text-xs text-green-400">Exam Certified</span>
+                    </div>
+                </div>
+
+                <!-- 70-485 -->
+                <div class="reveal glass rounded-xl p-5 card-hover group" style="transition-delay: 0.25s;">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500/20 to-orange-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i data-lucide="layers" class="w-5 h-5 text-yellow-400"></i>
+                    </div>
+                    <h4 class="font-semibold text-sm mb-1">70-485</h4>
+                    <p class="text-xs text-gray-400">Advanced Metro Style App Development using C#</p>
+                    <div class="mt-2 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+                        <span class="text-xs text-yellow-400">Exam Certified</span>
+                    </div>
+                </div>
+
+                <!-- 70-486 -->
+                <div class="reveal glass rounded-xl p-5 card-hover group" style="transition-delay: 0.3s;">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/20 to-red-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i data-lucide="server" class="w-5 h-5 text-primary-400"></i>
+                    </div>
+                    <h4 class="font-semibold text-sm mb-1">70-486</h4>
+                    <p class="text-xs text-gray-400">Developing ASP.NET 4.5 MVC Web Applications</p>
+                    <div class="mt-2 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary-400"></span>
+                        <span class="text-xs text-primary-400">Exam Certified</span>
+                    </div>
+                </div>
+
+                <!-- 70-487 -->
+                <div class="reveal glass rounded-xl p-5 card-hover group" style="transition-delay: 0.35s;">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i data-lucide="cloud" class="w-5 h-5 text-cyan-400"></i>
+                    </div>
+                    <h4 class="font-semibold text-sm mb-1">70-487</h4>
+                    <p class="text-xs text-gray-400">Developing Windows Azure & Web Services</p>
+                    <div class="mt-2 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                        <span class="text-xs text-cyan-400">Exam Certified</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TCM Certifications -->
+            <div class="mt-12 reveal">
+                <div class="glass rounded-2xl p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-red-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">TCM Cybersecurity Certifications</h3>
+                            <p class="text-sm text-gray-400">Practical ethical hacking and security training</p>
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-red-500/30 transition-colors">
+                            <i data-lucide="bug" class="w-5 h-5 text-red-400 mb-2"></i>
+                            <h4 class="font-medium text-sm">Practical Ethical Hacking</h4>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-red-500/30 transition-colors">
+                            <i data-lucide="terminal" class="w-5 h-5 text-red-400 mb-2"></i>
+                            <h4 class="font-medium text-sm">Windows Privilege Escalation</h4>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-red-500/30 transition-colors">
+                            <i data-lucide="terminal-square" class="w-5 h-5 text-red-400 mb-2"></i>
+                            <h4 class="font-medium text-sm">Linux Privilege Escalation</h4>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 hover:border-red-500/30 transition-colors">
+                            <i data-lucide="search" class="w-5 h-5 text-red-400 mb-2"></i>
+                            <h4 class="font-medium text-sm">Open Source Intelligence</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Achievements Section -->
+    <section class="py-20 md:py-32 relative bg-[#0d0d20]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+                    <i data-lucide="star" class="w-4 h-4 text-primary-400"></i>
+                    <span class="text-sm text-gray-300">Key Achievements</span>
+                </div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">
+                    Impact & <span class="gradient-text">Results</span>
+                </h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="reveal glass rounded-2xl p-8 text-center card-hover">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="trending-up" class="w-8 h-8 text-primary-400"></i>
+                    </div>
+                    <div class="text-4xl font-bold gradient-text mb-2">5%</div>
+                    <h3 class="font-semibold mb-2">Sales Increase</h3>
+                    <p class="text-sm text-gray-400">Coded a successful demo version of key products at Massbuild Builders generating increased revenue</p>
+                </div>
+
+                <div class="reveal glass rounded-2xl p-8 text-center card-hover" style="transition-delay: 0.1s;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="zap" class="w-8 h-8 text-blue-400"></i>
+                    </div>
+                    <div class="text-4xl font-bold gradient-text mb-2">10%</div>
+                    <h3 class="font-semibold mb-2">Processing Speed</h3>
+                    <p class="text-sm text-gray-400">Streamlined data storage procedures leading to improved processing speed</p>
+                </div>
+
+                <div class="reveal glass rounded-2xl p-8 text-center card-hover" style="transition-delay: 0.2s;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="cloud" class="w-8 h-8 text-green-400"></i>
+                    </div>
+                    <div class="text-4xl font-bold gradient-text mb-2">100%</div>
+                    <h3 class="font-semibold mb-2">Cloud Migration</h3>
+                    <p class="text-sm text-gray-400">Oversaw flawless migration of key applications to cloud-based platforms</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-32 relative">
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl translate-x-1/2"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-light mb-6">
+                    <i data-lucide="mail" class="w-4 h-4 text-primary-400"></i>
+                    <span class="text-sm text-gray-300">Get In Touch</span>
+                </div>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">
+                    Let's <span class="gradient-text">Connect</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    I'm available for an interview at your convenience. Let's discuss how I can contribute to your team.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Info -->
+                <div class="reveal-left space-y-6">
+                    <div class="glass rounded-2xl p-6 flex items-center gap-4 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-primary-500/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="mail" class="w-6 h-6 text-primary-400"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-400">Email</div>
+                            <a href="mailto:Nhlakzcs@gmail.com" class="text-lg font-medium hover:text-primary-400 transition-colors">Nhlakzcs@gmail.com</a>
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-2xl p-6 flex items-center gap-4 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-accent-500/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="phone" class="w-6 h-6 text-accent-400"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-400">Phone</div>
+                            <a href="tel:+27608232380" class="text-lg font-medium hover:text-accent-400 transition-colors">060 823 2380</a>
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-2xl p-6 flex items-center gap-4 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="map-pin" class="w-6 h-6 text-blue-400"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-400">Address</div>
+                            <p class="text-lg font-medium">12 Elmer's End, 41 Boxer Street, Northriding</p>
+                        </div>
+                    </div>
+
+                    <div class="glass rounded-2xl p-6 flex items-center gap-4 card-hover">
+                        <div class="w-14 h-14 rounded-xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="external-link" class="w-6 h-6 text-green-400"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-400">Portfolio</div>
+                            <a href="https://nk-enhle.github.io/" target="_blank" class="text-lg font-medium hover:text-green-400 transition-colors">nk-enhle.github.io ↗</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="reveal-right">
+                    <form id="contact-form" class="glass rounded-2xl p-6 md:p-8 space-y-5">
+                        <div class="grid sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Your Name</label>
+                                <input type="text" name="name" required placeholder="John Doe" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2">Your Email</label>
+                                <input type="email" name="email" required placeholder="Nhlakzcs@gmail.com" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Subject</label>
+                            <input type="text" name="subject" required placeholder="Job Opportunity" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Message</label>
+                            <textarea name="message" required rows="5" placeholder="Tell me about the opportunity..." class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full px-8 py-4 bg-gradient-to-r from-primary-600 to-accent-500 rounded-xl font-semibold hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                            Send Message
+                        </button>
+                        <p id="form-status" class="text-center text-sm hidden"></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center font-bold text-lg">
+                        NM
+                    </div>
+                    <div>
+                        <div class="font-display font-bold gradient-text">Nhlanhlenhle Mlondo</div>
+                        <div class="text-xs text-gray-500">MCSD C# Full Stack Developer</div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <a href="mailto:Nhlakzcs@gmail.com" class="text-gray-400 hover:text-primary-400 transition-colors">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://nk-enhle.github.io/" target="_blank" class="text-gray-400 hover:text-primary-400 transition-colors">
+                        <i data-lucide="globe" class="w-5 h-5"></i>
+                    </a>
+                    <a href="tel:+27608232380" class="text-gray-400 hover:text-primary-400 transition-colors">
+                        <i data-lucide="phone" class="w-5 h-5"></i>
+                    </a>
+                </div>
+
+                <div class="text-sm text-gray-500">
+                    © <span id="year"></span> Nhlanhlenhle Mlondo. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-r from-primary-600 to-accent-500 rounded-full flex items-center justify-center shadow-lg shadow-primary-500/30 opacity-0 invisible transition-all duration-300 hover:scale-110 z-50">
+        <i data-lucide="arrow-up" class="w-5 h-5"></i>
+    </button>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Typing effect
+        const typedTextElement = document.getElementById('typed-text');
+        const phrases = [
+            'MCSD C# Back-End Developer',
+            '.NET Core Specialist',
+            'Full Stack Developer',
+            'ASP.NET MVC Expert',
+            'SQL Database Architect',
+            'Cybersecurity Enthusiast',
+            'Web Designer & Developer'
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 80;
+
+        function typeEffect() {
+            const currentPhrase = phrases[phraseIndex];
+
+            if (isDeleting) {
+                typedTextElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 40;
+            } else {
+                typedTextElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 80;
+            }
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+        typeEffect();
+
+        // Scroll reveal animation
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Skill bars animation
+        const skillBars = document.querySelectorAll('.skill-bar');
+        const skillObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const width = entry.target.getAttribute('data-width');
+                    entry.target.style.width = width;
+                }
+            });
+        }, { threshold: 0.5 });
+
+        skillBars.forEach(bar => skillObserver.observe(bar));
+
+        // Counter animation
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.getAttribute('data-target'));
+                    const suffix = entry.target.textContent.includes('+') ? '+' : (target > 5 ? '+' : '');
+                    let current = 0;
+                    const increment = target / 40;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        entry.target.textContent = Math.floor(current) + '+';
+                    }, 50);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(el => counterObserver.observe(el));
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 80) {
+                navbar.classList.add('bg-[#0a0a1a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg');
+            } else {
+                navbar.classList.remove('bg-[#0a0a1a]/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'shadow-lg');
+            }
+
+            // Back to top button
+            const backToTop = document.getElementById('back-to-top');
+            if (currentScroll > 500) {
+                backToTop.classList.remove('opacity-0', 'invisible');
+                backToTop.classList.add('opacity-100', 'visible');
+            } else {
+                backToTop.classList.add('opacity-0', 'invisible');
+                backToTop.classList.remove('opacity-100', 'visible');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Back to top
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mobile menu
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function openMenu() {
+            mobileMenu.classList.add('open');
+            menuOverlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove('open');
+            menuOverlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        menuBtn.addEventListener('click', openMenu);
+        closeMenuBtn.addEventListener('click', closeMenu);
+        menuOverlay.addEventListener('click', closeMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+        // Active nav link on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active', 'text-white');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active', 'text-white');
+                }
+            });
+        });
+
+        // Cursor glow effect
+        const cursorGlow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // Contact form
+        const contactForm = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(contactForm);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+
+            // Open mailto link
+            const mailtoLink = `mailto:Nhlakzcs@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+            window.location.href = mailtoLink;
+
+            formStatus.textContent = 'Opening your email client...';
+            formStatus.classList.remove('hidden', 'text-red-400');
+            formStatus.classList.add('text-green-400');
+
+            setTimeout(() => {
+                formStatus.classList.add('hidden');
+            }, 5000);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Parallax effect for hero section blobs
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const blobs = document.querySelectorAll('.animate-morph');
+            blobs.forEach((blob, i) => {
+                const speed = 0.05 * (i + 1);
+                blob.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
